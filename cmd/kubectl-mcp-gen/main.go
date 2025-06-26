@@ -17,9 +17,10 @@ var (
 
 func main() {
 	// Create the root command for your kubectl plugin.
-	// The name 'kubectl-mcp-gen' here corresponds to the executable name.
+	// The 'Use' field should be the name of the plugin *without* the "kubectl-" prefix.
+	// This matches how the user will invoke it: 'kubectl mcp-gen [command]'
 	rootCmd := &cobra.Command{
-		Use:   "kubectl-mcp-gen",
+		Use:   "mcp-gen",
 		Short: "A kubectl plugin to generate MCP tool information as YAML.",
 		Long: `kubectl-mcp-gen is a kubectl plugin designed to interact with
 your hypothetical MCP tool and output relevant information
@@ -39,8 +40,11 @@ Available Commands:
 				return
 			}
 			// Fallback if an unknown command is given but not handled by Cobra
-			fmt.Printf("Error: unknown command %q\n", strings.Join(args, " "))
-			os.Exit(1)
+			// Ensure it only prints if the argument isn't 'help'
+			if len(args) > 0 && args[0] != "help" {
+				fmt.Printf("Error: unknown command %q\n", strings.Join(args, " "))
+				os.Exit(1)
+			}
 		},
 	}
 
