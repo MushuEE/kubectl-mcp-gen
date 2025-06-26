@@ -54,8 +54,6 @@ Available Commands:
 
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
-		// Cobra handles printing errors for unknown commands automatically now
-		// We only need to exit if Execute returns a real error.
 		os.Exit(1)
 	}
 }
